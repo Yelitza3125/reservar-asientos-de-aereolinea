@@ -58,6 +58,29 @@ if (choise === 1) {
     alert('Por favor ingresa un número válido');
 };
 
+var checFirstClassZone = function() {
+    var zone = 'Primera Clase';
+    //recorre del elemento 0 al 3 y verifica su disponibilidad
+    for(var index= 0; index < 4; index++) {
+        if(airlineSeats[index] == false) {
+            airlineSeats[index] = true;
+      //una vez reservado el asiento ya no se recorre el array
+            break;
+        }
+    }
+};
+
 var checkEconomicZone = function() {
-    
-}
+    var zone = 'Económica';
+    for(var index = 4; index < 10; index++) {
+        if(airlineSeats[index] == false) {
+            airlineSeats = true;
+            break;
+        }
+    }
+
+
+
+
+
+};
