@@ -64,6 +64,7 @@ var checFirstClassZone = function() {
     for(var index= 0; index < 4; index++) {
         if(airlineSeats[index] == false) {
             airlineSeats[index] = true;
+            reserveSeat(index);
       //una vez reservado el asiento ya no se recorre el array
             break;
         } else if(index == 3 && airlineSeats[index] == true) {
@@ -77,12 +78,20 @@ var checkEconomicZone = function() {
     for(var index = 4; index < 10; index++) {
         if(airlineSeats[index] == false) {
             airlineSeats = true;
+            reserveSeat(index);
             break;
         } else if(index == 9 && airlineSeats[index] == true) {
             reasignFirstClassZone(zone);
         }
     }
 };
+
+
+var reserveSeat = function(indexToPaint){
+    var seat = document.getElementsByClassName('seats');
+    seat[indexToPaint].textContent = 'Ocupado';
+};
+
 
 var reasignEconomicZone = function(zone) {
  var reasign = confirm('Ya no quedan asientos disponibles en ' + zone + ' \n ¿Quisiera reservar en zona Económica?');
@@ -101,4 +110,8 @@ var reasignFirstClassZone = function(zone) {
  } else {
      nextFlight();
  }
+};
+
+var nextFlight = function() {
+alert('Nuestro próximo vuelo sale en tres horas');
 };
