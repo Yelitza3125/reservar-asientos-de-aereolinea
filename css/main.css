@@ -1,9 +1,9 @@
 .first-class {
-    background-color: red;
+    background: purple;
 }
 
 .economic-class {
-    background-color: yellow;
+    background: yellow;
 }
 
 .seats {
