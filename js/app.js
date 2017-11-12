@@ -18,55 +18,58 @@ var airlineSeats = [
 //contador que rastree el número de asientos ocupados
 
 var busySeats = 0;
+ 
 
+
+//representar los asientos que se ocupan
 var paintSeats = function(array) {
- var containerSeat = document. getElementById('seats');
+ var containerSeats = document.getElementById('seats');
 
- for(var i= 0; i< array.length; i++ ) {
+ for(var i = 0; i < array.length; i++) {
      var seat = document.createElement('div');
      seat.className = 'seats';
 
      //del primer elemento al cuarto es Primera Clase. De i = 0 a i = 3
      if(i < 4) {
-         seat.style.background = 'purple';
+         seat.style.background = 'rgb(54, 185, 168)';
      } else {
-         seat.style.background = 'yellow';
+         seat.style.background = '#356697';
      }
-     containerSeat.appendChild(seat);
+     containerSeats.appendChild(seat);
  }
-
 };
 
 var reserve = function() {
-    var btn = document. getElementById('btn');
+    var btn = document.getElementById('btn');
     btn.addEventListener('click', chooseZone);
 };
 
+//función para elegir entre Primera clase y Clase económica
 var chooseZone = function() {
-    var choice = prompt('¿En qué zona prefieres reservar? \n 1. Primera Clase \n 2. Económica \n \n Por favor ingresa el número de tu preferencia' );
+    var choice = prompt('¿En qué zona prefieres reservar? \n 1. Primera Clase \n 2. Clae Económica \n \n Por favor ingresa el número de tu preferencia');
+
+    if (choice == 1) {
+        checkFirstClassZone();
+    } else if(choice == 2) {
+        checkEconomicZone();
+    } else {
+        alert('Por favor ingresa un número válido');
+    }
 };
 
 
-paintSeats(airlineSeats);
-reserve();
-
-if (choise === 1) {
-    checkFirstClassZone();
-} else if(choice === 2) {
-    checkEconomicZone();
-} else {
-    alert('Por favor ingresa un número válido');
-};
-
-var checFirstClassZone = function() {
+var checkFirstClassZone = function() {
     var zone = 'Primera Clase';
     //recorre del elemento 0 al 3 y verifica su disponibilidad
-    for(var index= 0; index < 4; index++) {
+    for(var index = 0; index < 4; index++) {
         if(airlineSeats[index] == false) {
             airlineSeats[index] = true;
             reserveSeat(index);
+            paintTicket(index, zone);
+            busySeats++;
       //una vez reservado el asiento ya no se recorre el array
             break;
+     //en el caso que todos los asientos esten ocupados
         } else if(index == 3 && airlineSeats[index] == true) {
             reasignEconomicZone(zone);
         }
@@ -74,11 +77,13 @@ var checFirstClassZone = function() {
 };
 
 var checkEconomicZone = function() {
-    var zone = 'Económica';
+    var zone = 'Clase Económica';
     for(var index = 4; index < 10; index++) {
         if(airlineSeats[index] == false) {
-            airlineSeats = true;
+            airlineSeats[index] = true;
             reserveSeat(index);
+            paintTicket(index, zone);
+            busySeats++;
             break;
         } else if(index == 9 && airlineSeats[index] == true) {
             reasignFirstClassZone(zone);
@@ -87,31 +92,67 @@ var checkEconomicZone = function() {
 };
 
 
+
+
 var reserveSeat = function(indexToPaint){
-    var seat = document.getElementsByClassName('seats');
+    seat = document.getElementsByClassName('seats');
     seat[indexToPaint].textContent = 'Ocupado';
 };
 
+var reasignFirstClassZone = function(zone) {
+    if(busySeats == 10) {
+        noSeats();
+        nextFlight();
+    } else {
+        var reasign = confirm('Ya no quedan asientos en ' + zone + ' \n ¿Quieres reservar en Primera Clase');
+        if(reasign == true) {
+        checkFirstClassZone();
+        } else {
+        nextFlight();
+        }
+    }
+};
 
 var reasignEconomicZone = function(zone) {
- var reasign = confirm('Ya no quedan asientos disponibles en ' + zone + ' \n ¿Quisiera reservar en zona Económica?');
+    if(busySeats == 10) {
+       noSeats();
+       nextFlight(); 
+    } else {
+        var reasign = confirm('Ya no quedan asientos disponibles en ' + zone + ' \n ¿Quisiera reservar en zona Económica');
+
+        if(reasign == true) {
+        checkEconomicZone();
+        } else {
+        nextFlight();
+        }
+   }
 };
 
-if(reasing == true) {
-    checkEconomicZone();
-} else {
-    nextFlight();
-};
 
-var reasignFirstClassZone = function(zone) {
- var reasing = confirm('Ya no quedan asientos en ' + zone + ' \n ¿Quieres reservar en Primera Clase');
- if(reasing == true) {
-     checkEconomicZone();
- } else {
-     nextFlight();
- }
+var paintTicket= function(index, zone) {
+    var containerTickets = document. getElementById('tickets');
+    var ticket = document.createElement('div');
+    ticket.className = 'paint-tickets';
+    ticket.style.border = '1px dotted  rgb(54, 185, 168)';
+    var title = document.createElement('p');
+    var reservedSeating = document.createElement('p');
+    var zoneClass = document.createElement('p');
+    title.textContent = 'Pase de abordar';
+    reservedSeating.textContent = 'N°. de asientos: ' + (index + 1);
+    zoneClass.textContent = zone;
+    ticket.appendChild(title);
+    ticket.appendChild(reservedSeating);
+    ticket.appendChild(zoneClass);
+    containerTickets.appendChild(ticket);
 };
 
 var nextFlight = function() {
 alert('Nuestro próximo vuelo sale en tres horas');
 };
+
+var noSeats = function() {
+    alert('Ya no quedan asientos disponibles en este avión');
+};
+
+paintSeats(airlineSeats);
+reserve();
